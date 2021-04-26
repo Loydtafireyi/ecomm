@@ -19,10 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+// Auth routes
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
@@ -30,9 +27,12 @@ Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']
 Route::get('products', [ProductController::class, 'index']);
 Route::get('product/{product}', [ProductController::class, 'show']);
 
-Route::middleware('auth:api')->post('topup', [TopupController::class, 'store']);
-Route::middleware('auth:api')->get('topups', [TopupController::class, 'index']);
-Route::middleware('auth:api')->post('checkout/{slug}', CheckoutController::class);
-Route::middleware('auth:api')->get('orders', OrderController::class);
+// Logged in user routes
+Route::middleware('auth:api')->group(function (){
+    Route::get('orders', OrderController::class);
+    Route::post('topup', [TopupController::class, 'store']);
+    Route::get('topups', [TopupController::class, 'index']);
+    Route::post('checkout/{slug}', CheckoutController::class);
+});
 
 
