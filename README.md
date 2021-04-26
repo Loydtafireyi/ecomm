@@ -13,7 +13,7 @@
 - **[php artisan passport:install  & copy the Client_ID 2 and Secrect to the env file and also setp OAuth URL]**
 - **[php artisan migrate ]**
 - **[php artisan migrate ]**
-- **[php artisan vserve]**
+- **[php artisan serve]**
 
 
 
@@ -22,4 +22,4 @@
 The admin dashboard creadentials admin@admin.com p/s password navigate to example.com/admin/login and start ading products.
 
 At first i started working on the project using the tdd approach until when i ran out of time. 
-Key areas to improve cover all the login without test cases.
+Key areas to improve cover all the logic without test cases and extract duplicate methods into resuable methods or traits, cover ux validation and ui improvements.
