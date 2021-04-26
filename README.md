@@ -5,7 +5,7 @@
 
 
 - **[git clone repo]**
-- **[git clone composer install]**
+- **[ cd to project & composer install]**
 - **[create env file]**
 - **[php artisan key:generate]**
 - **[npm install && npm run dev]**
