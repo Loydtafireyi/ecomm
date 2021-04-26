@@ -16,14 +16,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
 Route::middleware('auth', 'isAdmin')->group( function(){
     Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admin.index');
     Route::resource('admin/product', ProductController::class);
 });
-
 
 Route::get('/dashboard', function () {
     return view('dashboard');
