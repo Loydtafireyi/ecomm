@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +20,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth', 'isAdmin')->group( function(){
     Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admin.index');
-    Route::resource('admin/product', ProductController::class);
+    Route::get('admin/orders', [OrderController::class, 'index'])->name('order.index');
+    Route::patch('admin/order/{order}', [OrderController::class, 'update'])->name('order.update');
+    Route::delete('admin/order/{order}', [OrderController::class, 'destroy'])->name('order.destroy');
+    Route::resource('admin/product', ProductController::class)->except('show');
 });
 
 Route::get('/dashboard', function () {

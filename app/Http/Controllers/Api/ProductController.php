@@ -11,7 +11,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::select('name', 'id', 'slug', 'description', 'price')->get();
+        $products = Product::select('name', 'id', 'slug', 'description', 'price', 'image')->get();
 
         return ProductResource::collection($products);
     }

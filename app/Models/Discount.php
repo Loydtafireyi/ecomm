@@ -15,4 +15,9 @@ class Discount extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    // public function getDicountAmountAttribute()
+    // {
+    //     return number_format($this->discount, 2);
+    // }
 }

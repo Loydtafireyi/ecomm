@@ -6,33 +6,14 @@
     <h2
         class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
     >
-        Products
+        Orders
     </h2>
-    <!-- CTA -->
-    <a
-        class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple"
-        href="{{ route('product.create') }}"
-    >
-        <div class="flex items-center">
-        <svg
-            class="w-5 h-5 mr-2"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-        >
-            <path
-            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-            ></path>
-        </svg>
-        <span>Add</span>
-        </div>
-        <span>Product &RightArrow;</span>
-    </a>
 
     <!-- With avatar -->
     <h4
         class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300"
     >
-        Products
+        Orders
     </h4>
     <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
         <div class="w-full overflow-x-auto">
@@ -41,17 +22,17 @@
             <tr
                 class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
             >
-                <th class="px-4 py-3">Name</th>
+                <th class="px-4 py-3">Customer</th>
+                <th class="px-4 py-3">Product</th>
                 <th class="px-4 py-3">Price</th>
-                <th class="px-4 py-3">Description</th>
-                <th class="px-4 py-3">Discount</th>
+                <th class="px-4 py-3">Order Number</th>
                 <th class="px-4 py-3">Actions</th>
             </tr>
             </thead>
             <tbody
             class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
             >
-            @foreach ($products as $product)
+            @foreach ($orders as $order)
                 <tr class="text-gray-700 dark:text-gray-400">
                 <td class="px-4 py-3">
                 <div class="flex items-center text-sm">
@@ -61,7 +42,7 @@
                     >
                     <img
                         class="object-cover w-full h-full rounded-full"
-                        src="{{ asset($product->image) }}"
+                        src="{{ $order->user->avatarUrl() }}"
                         alt=""
                         loading="lazy"
                     />
@@ -71,23 +52,24 @@
                     ></div>
                     </div>
                     <div>
-                    <p class="font-semibold">{{ $product->name }}</p>
+                    <p class="font-semibold">{{ $order->user->name }}</p>
+                    <p class="text-sm">{{ $order->user->email }}</p>
                     </div>
                 </div>
                 </td>
                 <td class="px-4 py-3 text-sm">
-                    $ {{ $product->product_price }}
+                    {{ $order->product->name }}
                 </td>
                 <td class="px-4 py-3 text-sm">
-                    {{ Str::limit($product->description, 80) }}
+                    {{ $order->billing }}
                 </td>
                 <td class="px-4 py-3 text-sm">
-                $ {{ $product->discountExists() }}
+                    {{ $order->order_number }}
                 </td>
 
                 <td class="px-4 py-3">
                     <div class="flex items-center space-x-4 text-sm">
-                        <a href="{{ route('product.edit', $product->slug) }}"
+                        <a href="{{ route('order.update', $order->id) }}"
                         class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                         aria-label="Edit"
                         >
@@ -103,7 +85,7 @@
                         </svg>
                         </a>
 
-                        <form action='{{ route('product.destroy', $product->slug) }}' method="post">
+                        <form action='{{ route('order.destroy', $order->id) }}' method="post">
                             @csrf
                             @method('DELETE')
                             <button
@@ -135,7 +117,7 @@
         <div
         class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800"
         >
-        {{ $products->links() }}
+        {{ $orders->links() }}
         </div>
     </div>
 

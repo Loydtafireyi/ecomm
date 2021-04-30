@@ -4,15 +4,17 @@
 
 
 
-- **[git clone repo]**
-- **[ cd to project & composer install]**
-- **[create env file]**
-- **[php artisan key:generate]**
+- **[git clone https://github.com/Loydtafireyi/ecomm.git]**
+- **[composer install]**
 - **[npm install && npm run dev]**
-- **[setup db ]**
-- **[php artisan passport:install  & copy the Client_ID 2 and Secrect to the env file and also setp OAuth URL]**
+- **[php artisan key:generate]**
+- **[create .env file]**
+- **[setup database]**
 - **[php artisan migrate ]**
-- **[php artisan migrate ]**
+- **[php artisan passport:install]**
+- **[Add the Client_ID 2 and CLIENT_SECRET to the env file and also add the OAuth URL - this is basically the app url plus /oauth/token eg http://localhost:8000/oauth/token]**
+- **[php artisan db:seed]**
+- **[php artisan storage:link]**
 - **[php artisan serve]**
 
 
