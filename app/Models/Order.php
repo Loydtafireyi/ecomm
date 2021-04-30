@@ -20,4 +20,9 @@ class Order extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function getBillingAttribute()
+    {
+        return number_format($this->billing_total, 2);
+    }
 }

@@ -20934,7 +20934,12 @@ var render = function() {
                 _c("img", {
                   staticClass:
                     "object-cover object-center w-full lg:h-48 md:h-36",
-                  attrs: { src: "https://dummyimage.com/720x400", alt: "blog" }
+                  attrs: {
+                    src: product.image,
+                    width: "720",
+                    height: "400",
+                    alt: "blog"
+                  }
                 }),
                 _vm._v(" "),
                 _c("div", { staticClass: "p-6" }, [

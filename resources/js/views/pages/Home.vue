@@ -5,7 +5,7 @@
 
           <div class="p-4 md:w-1/3" v-for="product in products">
             <div class="h-full overflow-hidden border-2 border-gray-200 rounded-lg border-opacity-60">
-              <img class="object-cover object-center w-full lg:h-48 md:h-36" src="https://dummyimage.com/720x400" alt="blog">
+              <img class="object-cover object-center w-full lg:h-48 md:h-36" :src="product.image" width="720" height="400" alt="blog">
               <div class="p-6">
                 <h2 class="mb-1 text-xs font-medium tracking-widest text-gray-400 title-font">CATEGORY</h2>
                 <h1 class="mb-3 text-lg font-medium text-gray-900 title-font">{{ product.name }}</h1>

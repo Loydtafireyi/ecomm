@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Traits\CalculateDiscount;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    use CalculateDiscount;
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +19,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products  = Product::select('name', 'id', 'description', 'price', 'slug')->paginate(10);
+        $products  = Product::select('name', 'id', 'description', 'price', 'slug', 'image')->paginate(10);
 
         return view('admin.product.index', compact('products'));
     }
@@ -42,28 +46,26 @@ class ProductController extends Controller
             'name' => 'required|unique:products,name',
             'price' => 'required|integer',
             'description' => 'required',
+            'image' => 'required|image',
         ]);
 
+        // convert name to slug
         $slug = Str::slug($validated['name']);
-
         $validated['slug'] = $slug;
 
         $product = Product::create($validated);
+
+        // save product image
+        $name = Str::random(14);
+        $extension = $validated['image']->getClientOriginalExtension();
+        $image = Image::make($validated['image'])->fit(720, 400)->encode($extension);
+        Storage::disk('public')->put($path = "products/{$product->id}/{$name}.{$extension}", (string) $image);
         
+        $product->update(['image' => "storage/$path"]);
+
         $this->calculateDiscount($product);
 
         return redirect(route('product.index'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -91,10 +93,23 @@ class ProductController extends Controller
             'slug' => 'required|unique:products,slug,' . $product->id,
             'price' => 'required|integer',
             'description' => 'required',
+            'image' => 'nullable|image'
         ]);
 
 
         $product->update($validated);
+
+        if ($request->hasFile('image')) {
+            //delete old image
+            Storage::disk('public')->delete($product->image);
+            // save product image
+            $name = Str::random(14);
+            $extension = $validated['image']->getClientOriginalExtension();
+            $image = Image::make($validated['image'])->fit(720, 400)->encode($extension);
+            Storage::disk('public')->put($path = "products/{$product->id}/{$name}.{$extension}", (string) $image);
+            
+            $product->update(['image' => "storage/$path"]);
+        }
 
         $this->calculateDiscount($product);
 
@@ -109,35 +124,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        Storage::disk('public')->delete($product->image);
+
         $product->delete();
 
         return redirect(route('product.index'));
-    }
-
-    private function calculateDiscount(Product $product)
-    {
-        if($product->price >= 112 && $product->price <= 115) {
-            $percentage = 0.25;
-            $price = $product->price;
-
-            $discount = ($percentage / 100) * $price;
-
-            if($product->discount()->exists()){
-                $product->discount()->update(['discount' => $discount]);
-
-            } else {
-
-                $product->discount()->create(['discount' => $discount]);
-            }
-        }
-
-        if($product->price >= 120) {
-            $percentage = 0.50;
-            $price = $product->price;
-
-            $discount = ($percentage / 100) * $price;
-
-            $product->discount()->create(['discount' => $discount]);
-        }
     }
 }

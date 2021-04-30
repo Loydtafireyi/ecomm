@@ -9,7 +9,7 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'price', 'description', 'slug'];
+    protected $fillable = ['name', 'price', 'description', 'slug', 'image'];
 
     public function getRouteKeyName()
     {
@@ -24,14 +24,19 @@ class Product extends Model
     public function discountExists()
     {
         if($this->discount()->exists()) {
-            return $this->discount->discount;
+            return number_format($this->discount->discount, 2);
         } else{
-            return 0;
+            return '0.00';
         }
     }
 
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function getProductPriceAttribute()
+    {
+        return number_format($this->price, 2);
     }
 }
