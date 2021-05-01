@@ -26,7 +26,8 @@ class ProductFactory extends Factory
             'name' => $this->faker->unique()->name(),
             'slug' => Str::slug($this->faker->name()),
             'description' => $this->faker->paragraph(),
-            'price' => $this->faker->unique()->numberBetween(90, 100),
+            'price' => $this->faker->unique()->numberBetween(50, 100),
+            'image' => 'https://source.unsplash.com/random/400',
         ];
     }
 }

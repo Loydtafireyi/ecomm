@@ -25,7 +25,7 @@ trait CalculateDiscount
         }
 
         if($product->price >= 120) {
-            $percentage = 0.50;
+            $percentage = 0.5;
             $price = $product->price;
 
             $discount = ($percentage / 100) * $price;

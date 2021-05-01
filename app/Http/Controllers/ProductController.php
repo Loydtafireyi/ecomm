@@ -46,7 +46,7 @@ class ProductController extends Controller
             'name' => 'required|unique:products,name',
             'price' => 'required|integer',
             'description' => 'required',
-            'image' => 'required|image',
+            'image' => 'nullable|image',
         ]);
 
         // convert name to slug
@@ -56,12 +56,14 @@ class ProductController extends Controller
         $product = Product::create($validated);
 
         // save product image
-        $name = Str::random(14);
-        $extension = $validated['image']->getClientOriginalExtension();
-        $image = Image::make($validated['image'])->fit(720, 400)->encode($extension);
-        Storage::disk('public')->put($path = "products/{$product->id}/{$name}.{$extension}", (string) $image);
-        
-        $product->update(['image' => "storage/$path"]);
+        if ($request->hasFile('image')) {
+            $name = Str::random(14);
+            $extension = $validated['image']->getClientOriginalExtension();
+            $image = Image::make($validated['image'])->fit(720, 400)->encode($extension);
+            Storage::disk('public')->put($path = "products/{$product->id}/{$name}.{$extension}", (string) $image);
+            
+            $product->update(['image' => "storage/$path"]);
+        }
 
         $this->calculateDiscount($product);
 
