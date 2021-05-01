@@ -3,7 +3,8 @@ import { reject } from "lodash";
 
 export default {
     state: {
-        token: null || localStorage.getItem('access_token') 
+        token: null || localStorage.getItem('access_token'),
+        order: null,
     },
     getters: {
         loggedIn(state) {
@@ -16,6 +17,10 @@ export default {
         },
         destroyToken(state) {
             state.token = null
+        },
+
+        placeOrder(state, order) {
+            state.order = order
         }
     },
   
@@ -98,11 +103,13 @@ export default {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
             return new Promise((resolve, reject) => {
                 axios.post('/api/checkout/' + data.slug).then(response => {
-                    context.commit('placeOrder')
+                    const order = response.data.data
+                    console.log(order)
+                    context.commit('placeOrder', order)
                     resolve(response)
                 }).catch(error => {
                     reject(error)
-                    console.log(error)
+                    console.log(error.response)
                 })
             })
           

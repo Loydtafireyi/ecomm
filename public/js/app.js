@@ -2212,11 +2212,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'ProductView',
   created: function created() {
@@ -2243,13 +2238,13 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch('placeOrder', {
         slug: this.slug
       }).then(function (response) {
-        console.log(response);
+        console.log(response.data);
 
         _this2.$router.push({
           path: '/orders'
         });
       })["catch"](function (error) {
-        console.log(error.response);
+        console.log(error);
       });
     }
   }
@@ -2783,7 +2778,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   state: {
-    token:  false || localStorage.getItem('access_token')
+    token:  false || localStorage.getItem('access_token'),
+    order: null
   },
   getters: {
     loggedIn: function loggedIn(state) {
@@ -2796,6 +2792,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     destroyToken: function destroyToken(state) {
       state.token = null;
+    },
+    placeOrder: function placeOrder(state, order) {
+      state.order = order;
     }
   },
   actions: {
@@ -2868,11 +2867,13 @@ __webpack_require__.r(__webpack_exports__);
       (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common.Authorization) = 'Bearer ' + context.state.token;
       return new Promise(function (resolve, reject) {
         axios__WEBPACK_IMPORTED_MODULE_0___default().post('/api/checkout/' + data.slug).then(function (response) {
-          context.commit('placeOrder');
+          var order = response.data.data;
+          console.log(order);
+          context.commit('placeOrder', order);
           resolve(response);
         })["catch"](function (error) {
           reject(error);
-          console.log(error);
+          console.log(error.response);
         });
       });
     }
@@ -21599,7 +21600,11 @@ var render = function() {
             "flex flex-col w-3/4 px-5 py-10 bg-white rounded-md shadow-lg md:flex-row gap-11 md:max-w-2xl"
         },
         [
-          _vm._m(0),
+          _c(
+            "div",
+            { staticClass: "flex flex-col justify-between text-indigo-500" },
+            [_c("img", { attrs: { src: _vm.product.image, alt: "" } })]
+          ),
           _vm._v(" "),
           _c("div", { staticClass: "text-indigo-500" }, [
             _c("small", { staticClass: "uppercase" }, [_vm._v("Category")]),
@@ -21614,7 +21619,9 @@ var render = function() {
               _c("span", { staticClass: "text-red-700 line-through" }, [
                 _vm._v("$" + _vm._s(_vm.product.price_before))
               ]),
-              _vm._v("\n          $" + _vm._s(_vm.product.price) + "\n      ")
+              _vm._v(
+                "\n            $" + _vm._s(_vm.product.price) + "\n        "
+              )
             ]),
             _vm._v(" "),
             _c("small", { staticClass: "text-black" }, [
@@ -21639,26 +21646,7 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "flex flex-col justify-between text-indigo-500" },
-      [
-        _c("img", {
-          attrs: {
-            src:
-              "https://images.stockx.com/Nike-Epic-React-Flyknit-2-White-Pink-Foam-W-Product.jpg?fit=fill&bg=FFFFFF&w=700&h=500&auto=format,compress&q=90&dpr=2&trim=color&updated_at=1603481985",
-            alt: ""
-          }
-        })
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
