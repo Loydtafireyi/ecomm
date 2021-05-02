@@ -30,6 +30,7 @@ class ProductTest extends TestCase
             'name' => 'iPhone S',
             'description' => 'This is a new iphone',
             'price' => 50,
+            'image' => '',
         ]);
 
         $response->assertRedirect(route('product.index'));
