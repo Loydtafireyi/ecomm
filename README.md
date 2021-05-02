@@ -19,7 +19,7 @@ php artisan key:generate
 *Create an .env file*
 *For Windows run ```copy .env.example .env```  For Mac and Linux run ```cp .env.example .env```*
 
-*Setup Your Database either sqlite of mysql*
+*Setup Your Database either sqlite or mysql*
 ```php 
 php artisan migrate 
 ```
